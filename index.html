@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VEX V5 VRC Scouting App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f9;
+    }
+    header {
+      background-color: #d40000;
+      color: #fff;
+      text-align: center;
+      padding: 1rem;
+    }
+    main {
+      padding: 2rem;
+    }
+    .card {
+      background: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      margin-bottom: 2rem;
+      padding: 1rem;
+    }
+    .card h2 {
+      margin: 0 0 1rem;
+    }
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    button {
+      background-color: #d40000;
+      color: #fff;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    button:hover {
+      background-color: #d40000;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 2rem;
+    }
+    table th, table td {
+      border: 1px solid #ddd;
+      padding: 0.75rem;
+      text-align: left;
+    }
+    table th {
+      background-color: #d40000;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Centurion VRC Scouting Log</h1>
+  </header>
+  <main>
+    <div class="card">
+      <h2>Scout a Team</h2>
+      <form id="scouting-form">
+        <div class="form-group">
+          <label for="team-number">Team Number</label>
+          <input type="text" id="team-number" required />
+        </div>
+        <div class="form-group">
+          <label for="match-number">Match Number</label>
+          <input type="number" id="match-number" required />
+        </div>
+        <div class="form-group">
+          <label for="auton-performance">Autonomous Performance</label>
+          <textarea id="auton-performance" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="scored-points">Scored Points</label>
+          <input type="number" id="scored-points" required />
+        </div>
+        <div class="form-group">
+          <label for="notes">Notes</label>
+          <textarea id="notes" rows="4"></textarea>
+        </div>
+        <button type="submit">Save Team Data</button>
+      </form>
+    </div>
+    <div class="card">
+      <h2>Scouted Teams</h2>
+      <table id="scouted-teams-table">
+        <thead>
+          <tr>
+            <th>Team Number</th>
+            <th>Match Number</th>
+            <th>Autonomous Performance</th>
+            <th>Scored Points</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+  </main>
+  <script>
+    const scoutingForm = document.getElementById('scouting-form');
+    const scoutedTeamsTable = document.getElementById('scouted-teams-table').querySelector('tbody');
+    document.addEventListener('DOMContentLoaded', function () {
+      const storedTeams = JSON.parse(localStorage.getItem('scoutedTeams')) || [];
+      storedTeams.forEach(team => addRowToTable(team));
+    });
+  
+    scoutingForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const teamNumber = document.getElementById('team-number').value;
+      const matchNumber = document.getElementById('match-number').value;
+      const autonPerformance = document.getElementById('auton-performance').value;
+      const scoredPoints = document.getElementById('scored-points').value;
+      const notes = document.getElementById('notes').value;
+  
+      const teamData = {
+        teamNumber,
+        matchNumber,
+        autonPerformance,
+        scoredPoints,
+        notes
+      };
+      const storedTeams = JSON.parse(localStorage.getItem('scoutedTeams')) || [];
+      storedTeams.push(teamData);
+      localStorage.setItem('scoutedTeams', JSON.stringify(storedTeams));
+      addRowToTable(teamData);
+      scoutingForm.reset();
+    });
+    function addRowToTable({ teamNumber, matchNumber, autonPerformance, scoredPoints, notes }) {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${teamNumber}</td>
+        <td>${matchNumber}</td>
+        <td>${autonPerformance}</td>
+        <td>${scoredPoints}</td>
+        <td>${notes}</td>
+      `;
+      scoutedTeamsTable.appendChild(row);
+    }
+    document.getElementById('reset-data').addEventListener('click', function () {
+
+  </script>  
+</body>
+</html>
